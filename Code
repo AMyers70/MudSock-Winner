@@ -1,1 +1,120 @@
-hi 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #f0f0f0;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>Attendance Tracker</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Student Name</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="student-table">
+      <!-- Rows will be dynamically added here -->
+    </tbody>
+  </table>
+  <button onclick="saveAttendance()">Save Attendance</button>
+  <button onclick="downloadAttendance()">Download Attendance</button>
+
+  <script>
+    // Sample student data
+    const students = ["Alice", "Bob", "Charlie", "Diana"];
+
+    // Function to render the student table
+    function renderTable() {
+      const tableBody = document.getElementById('student-table');
+      tableBody.innerHTML = ''; // Clear the table body
+      students.forEach((student, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${student}</td>
+          <td>
+            <select id="status-${index}">
+              <option value="Present">Present</option>
+              <option value="Absent">Absent</option>
+            </select>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    // Function to save attendance
+    function saveAttendance() {
+      const attendance = [];
+      students.forEach((student, index) => {
+        const status = document.getElementById(`status-${index}`).value;
+        attendance.push({ name: student, status });
+      });
+      console.log('Attendance saved:', attendance);
+      alert('Attendance saved successfully!');
+    }
+
+    // Function to download attendance as CSV
+    function downloadAttendance() {
+      const rows = [["Student Name", "Status"]];
+      students.forEach((student, index) => {
+        const status = document.getElementById(`status-${index}`).value;
+        rows.push([student, status]);
+      });
+
+      let csvContent = "data:text/csv;charset=utf-8,";
+      rows.forEach(row => {
+        csvContent += row.join(",") + "\n";
+      });
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "attendance.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Render the table on page load
+    renderTable();
+  </script>
+</body>
+</html>
