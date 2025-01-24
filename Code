@@ -1,143 +1,241 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Homework Reminder</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      background-color: #f5f5f5;
-    }
-    h1 {
-      text-align: center;
-    }
-    .form-container {
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    input, textarea {
-      padding: 10px;
-      margin: 5px;
-      width: 80%;
-      max-width: 400px;
-    }
-    button {
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    table, th, td {
-      border: 1px solid #ccc;
-    }
-    th, td {
-      padding: 10px;
-      text-align: center;
-    }
-    th {
-      background-color: #f0f0f0;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rate My Class - Fishers High School</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Homework Reminder</h1>
-  
-  <div class="form-container">
-    <input type="text" id="title" placeholder="Homework Title" />
-    <textarea id="description" placeholder="Description"></textarea>
-    <input type="date" id="due-date" />
-    <button onclick="addAssignment()">Add Assignment</button>
-  </div>
-
-  <table>
-    <thead>
-      <tr>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Due Date</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody id="assignment-list">
-      <!-- Assignments will be listed here -->
-    </tbody>
-  </table>
-
-  <script>
-    const assignments = [];
-
-    // Function to render the assignments list
-    function renderAssignments() {
-      const listElement = document.getElementById('assignment-list');
-      listElement.innerHTML = '';  // Clear the table
-
-      assignments.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate)); // Sort by due date
-
-      assignments.forEach((assignment, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${assignment.title}</td>
-          <td>${assignment.description}</td>
-          <td>${assignment.dueDate}</td>
-          <td><button onclick="deleteAssignment(${index})">Delete</button></td>
-        `;
-        listElement.appendChild(row);
-      });
-    }
-
-    // Function to add a new assignment
-    function addAssignment() {
-      const title = document.getElementById('title').value;
-      const description = document.getElementById('description').value;
-      const dueDate = document.getElementById('due-date').value;
-
-      if (!title || !description || !dueDate) {
-        alert('Please fill out all fields!');
-        return;
-      }
-
-      const newAssignment = { title, description, dueDate };
-      assignments.push(newAssignment);
-      renderAssignments();
-
-      // Clear input fields after adding
-      document.getElementById('title').value = '';
-      document.getElementById('description').value = '';
-      document.getElementById('due-date').value = '';
-
-      setReminder(newAssignment);  // Set a reminder for the new assignment
-    }
-
-    // Function to delete an assignment
-    function deleteAssignment(index) {
-      assignments.splice(index, 1);
-      renderAssignments();
-    }
-
-    // Function to set a reminder for an assignment
-    function setReminder(assignment) {
-      const dueDate = new Date(assignment.dueDate);
-      const currentDate = new Date();
-      const timeUntilDue = dueDate - currentDate;  // Time in milliseconds
-
-      // If the due date is in the future
-      if (timeUntilDue > 0) {
-        setTimeout(() => {
-          alert(`Reminder: The assignment "${assignment.title}" is due today!`);
-        }, timeUntilDue);
-      }
-    }
-  </script>
+    <header>
+        <div id="header-content">
+            <img id="school-logo" src="https://resources.finalsite.net/images/f_auto,q_auto,t_image_size_2/v1695050685/hsek12inus/hk0m2y7d8ucxxxllj3mt/Fisherslogobackward2.png" alt="Fishers High School Logo">
+            <div>
+                <h1>Rate My Class</h1>
+                <h2>Fishers High School</h2>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section id="class-list">
+            <h3>Select a Class to Rate</h3>
+            <ul id="class-options">
+                <!-- JavaScript will populate this list -->
+            </ul>
+        </section>
+        <section id="rating-form">
+            <h3>Rate a Class</h3>
+            <form id="rate-class-form">
+                <label for="difficulty">Difficulty (1-10):</label>
+                <input type="number" id="difficulty" name="difficulty" min="1" max="10" required>
+                
+                <label for="interesting">Interesting (1-10):</label>
+                <input type="number" id="interesting" name="interesting" min="1" max="10" required>
+                
+                <label for="homework">Homework Load (1-10):</label>
+                <input type="number" id="homework" name="homework" min="1" max="10" required>
+                
+                <button type="submit">Submit Rating</button>
+            </form>
+        </section>
+        <section id="ratings">
+            <h3>Class Ratings</h3>
+            <button id="view-ratings-btn">View All Ratings</button>
+            <ul id="ratings-list">
+                <!-- Ratings will appear here -->
+            </ul>
+        </section>
+    </main>
+    <section id="creators">
+        <h3>Creators</h3>
+        <p>By <strong>Eshan Jain</strong> and <strong>Alex Myers</strong></p>
+    </section>
+    <footer>
+        <p>&copy; 2025 Fishers High School</p>
+    </footer>
+    <script src="script.js"></script>
 </body>
 </html>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    color: #333;
+}
+
+header {
+    background-color: #ff0000;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+h1, h2 {
+    margin: 0;
+}
+
+main {
+    padding: 20px;
+}
+
+h3 {
+    color: #ff0000;
+}
+
+section {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    background-color: #f9f9f9;
+}
+
+form label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+form input {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #ff0000;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #cc0000;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    margin: 5px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #ffffff;
+}
+#creators {
+    text-align: center;
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #ff0000;
+    color: white;
+    border-radius: 5px;
+}
+
+#creators h3 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+#creators p {
+    margin: 5px 0 0;
+    font-size: 1em;
+}
+
+footer{
+  text-align: center;
+  text-size: 10px;
+}
+
+header {
+    text-align: center;
+    padding: 20px;
+    background-color: #ff0000;
+    color: white;
+}
+
+#header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+#school-logo {
+    width: 80px;
+    height: auto;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+}
+
+header h2 {
+    margin: 5px 0 0;
+    font-size: 1.5em;
+    font-weight: normal;
+}
+// Example classes available at Fishers High School
+const classes = [
+    "AP Seminar",
+    "AP Physics 1",
+    "ACP Business Administration",
+    "Adv CC Physiology 215",
+    "AP Calculus BC",
+    "AP Computer Science A",
+];
+
+const classListElement = document.getElementById("class-options");
+const ratingsListElement = document.getElementById("ratings-list");
+const rateClassForm = document.getElementById("rate-class-form");
+
+// Populate class list
+classes.forEach((className) => {
+    const listItem = document.createElement("li");
+    listItem.textContent = className;
+    listItem.dataset.className = className;
+    listItem.addEventListener("click", () => {
+        document.querySelector("#rating-form h3").textContent = `Rate: ${className}`;
+        rateClassForm.dataset.currentClass = className;
+    });
+    classListElement.appendChild(listItem);
+});
+
+// Handle rating form submission
+rateClassForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const currentClass = rateClassForm.dataset.currentClass;
+    const difficulty = parseInt(document.getElementById("difficulty").value, 10);
+    const interesting = parseInt(document.getElementById("interesting").value, 10);
+    const homework = parseInt(document.getElementById("homework").value, 10);
+
+    if (!currentClass) {
+        alert("Please select a class to rate.");
+        return;
+    }
+
+    const rating = {
+        class: currentClass,
+        difficulty,
+        interesting,
+        homework,
+    };
+
+    // Add rating to the ratings list
+    const ratingItem = document.createElement("li");
+    ratingItem.textContent = `${rating.class} - Difficulty: ${rating.difficulty}, Interesting: ${rating.interesting}, Homework Load: ${rating.homework}`;
+    ratingsListElement.appendChild(ratingItem);
+
+    // Reset the form
+    rateClassForm.reset();
+    document.querySelector("#rating-form h3").textContent = "Rate a Class";
+});
