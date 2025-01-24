@@ -48,7 +48,7 @@
     </main>
     <section id="creators">
         <h3>Creators</h3>
-        <p>By <strong>Eshan Jain</strong> and <strong>Alex Myers</strong></p>
+      <p>By <strong>Eshan Jain</strong>, <strong>Alex Myers</strong>, and <strong>James Gropp</strong></p>
     </section>
     <footer>
         <p>&copy; 2025 Fishers High School</p>
@@ -184,6 +184,7 @@ header h2 {
     font-size: 1.5em;
     font-weight: normal;
 }
+
 // Example classes available at Fishers High School
 const classes = [
     "AP Seminar",
